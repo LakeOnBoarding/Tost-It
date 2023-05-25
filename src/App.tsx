@@ -1,7 +1,12 @@
 import React from "react";
+import Router from "./Router/Router";
 
 function App() {
-  return <div className="App">오타만 안나오면됨</div>;
+  return (
+    <div className="App">
+      <Router/>
+    </div>
+  )
 }
 
 export default App;
