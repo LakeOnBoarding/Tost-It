@@ -13,7 +13,12 @@
     "react-app/jest", //  CRA로 프로젝트 생성 시 기본 생성 됨.
     "prettier" //  formatter는 프리티어로 대체함
   ],
-  "overrides": [],
+  "overrides": [
+    {
+      "files": ["**/*.js", "**/*.jsx"],
+      "excludedFiles": ["tailwind.config.js"]
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
