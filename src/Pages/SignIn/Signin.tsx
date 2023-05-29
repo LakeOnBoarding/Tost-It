@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { customAxios } from "../../API/customAxios";
 
 type MyFormData = {
   email: string;
@@ -12,7 +13,14 @@ function SignIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<MyFormData>();
-  const onSubmitHandler: SubmitHandler<MyFormData> = (data) => {
+
+  const onSubmitHandler: SubmitHandler<MyFormData> = async (data) => {
+    try {
+      const loginRes = await customAxios.post("auth/signin", data);
+      console.log(loginRes);
+    } catch (err) {
+      console.error(err);
+    }
     console.log(data);
   };
 
@@ -54,7 +62,7 @@ function SignIn() {
               required: "비밀번호를 입력해주세요",
               pattern: {
                 value:
-                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=])(?=.*[a-zA-Z\d@#$%^&+=]).{8,}$/,
+                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[*!@#$%^&+=()-_])(?=.*[a-zA-Z\d@#$%^&+=]).{8,}$/,
                 message:
                   "특수문자, 숫자, 영문자 조합 8글자 이상을 입력해주세요.",
               },
