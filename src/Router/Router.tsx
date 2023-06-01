@@ -13,7 +13,6 @@ export default function Router() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/todo" element={<Todo />} />
-
         {/* <Route path='u*' element={<NotFuund/>} /> */}
       </Routes>
     </BrowserRouter>

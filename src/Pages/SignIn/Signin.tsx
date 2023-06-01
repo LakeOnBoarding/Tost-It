@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { customAxios } from "../../API/customAxios";
+import { useNavigate } from "react-router-dom";
 
 type MyFormData = {
   email: string;
@@ -8,6 +9,8 @@ type MyFormData = {
 };
 
 function SignIn() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -18,11 +21,10 @@ function SignIn() {
     try {
       const loginRes = await customAxios.post("auth/signin", data);
       localStorage.setItem("access_token", loginRes.data.access_token);
-      console.log(loginRes);
+      navigate("/todo");
     } catch (err) {
       console.error(err);
     }
-    console.log(data);
   };
 
   return (
@@ -34,7 +36,7 @@ function SignIn() {
             이메일
           </label>
           <input
-            className="w-80 text-sm px-2 py-2 border-b block"
+            className="w-80 text-sm px-2 py-2 border-b block outline-0 focus:border-sky-500"
             type="email"
             id="email"
             placeholder="todo@list.com"
@@ -47,7 +49,7 @@ function SignIn() {
             })}
           />
           {errors.email && (
-            <span className="text-red text-xsm">{errors.email.message}</span>
+            <span className="text-red text-xsm ">{errors.email.message}</span>
           )}
         </fieldset>
         <fieldset className="block mb-4">
@@ -55,7 +57,7 @@ function SignIn() {
             비밀번호
           </label>
           <input
-            className="w-80 text-sm px-2 py-2 border-b block"
+            className="w-80 text-sm px-2 py-2 border-b block outline-0 focus:border-sky-500"
             type="password"
             id="password"
             placeholder="특수문자,숫자,영문자 조합 8글자 이상"
