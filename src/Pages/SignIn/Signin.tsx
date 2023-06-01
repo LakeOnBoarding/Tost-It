@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { customAxios } from "../../API/customAxios";
+import { useNavigate } from "react-router-dom";
 
 type MyFormData = {
   email: string;
@@ -7,13 +9,22 @@ type MyFormData = {
 };
 
 function SignIn() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<MyFormData>();
-  const onSubmitHandler: SubmitHandler<MyFormData> = (data) => {
-    console.log(data);
+    formState: { errors, isValid },
+  } = useForm<MyFormData>({ mode: "onChange" });
+
+  const onSubmitHandler: SubmitHandler<MyFormData> = async (data) => {
+    try {
+      const loginRes = await customAxios.post("auth/signin", data);
+      localStorage.setItem("access_token", loginRes.data.access_token);
+      navigate("/todo");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -25,7 +36,7 @@ function SignIn() {
             이메일
           </label>
           <input
-            className="w-80 text-sm px-2 py-2 border-b block"
+            className="w-80 text-sm px-2 py-2 border-b block outline-0 focus:border-sky-500"
             type="email"
             id="email"
             placeholder="todo@list.com"
@@ -38,7 +49,7 @@ function SignIn() {
             })}
           />
           {errors.email && (
-            <span className="text-red text-xsm">{errors.email.message}</span>
+            <span className="text-red text-xsm ">{errors.email.message}</span>
           )}
         </fieldset>
         <fieldset className="block mb-4">
@@ -46,7 +57,7 @@ function SignIn() {
             비밀번호
           </label>
           <input
-            className="w-80 text-sm px-2 py-2 border-b block"
+            className="w-80 text-sm px-2 py-2 border-b block outline-0 focus:border-sky-500"
             type="password"
             id="password"
             placeholder="특수문자,숫자,영문자 조합 8글자 이상"
@@ -54,7 +65,7 @@ function SignIn() {
               required: "비밀번호를 입력해주세요",
               pattern: {
                 value:
-                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=])(?=.*[a-zA-Z\d@#$%^&+=]).{8,}$/,
+                  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[*!@#$%^&+=()-_])(?=.*[a-zA-Z\d@#$%^&+=]).{8,}$/,
                 message:
                   "특수문자, 숫자, 영문자 조합 8글자 이상을 입력해주세요.",
               },
@@ -66,7 +77,10 @@ function SignIn() {
         </fieldset>
         <button
           type="submit"
-          className="text-white font-bold py-2 h-11 bg-sky-400 mt-8 mb-5 rounded-full text-sm"
+          className={`text-white font-bold py-2 h-11 mt-8 mb-5 rounded-full text-sm ${
+            isValid ? "bg-sky-500" : "bg-sky-200"
+          } `}
+          disabled={!isValid}
         >
           로그인
         </button>
