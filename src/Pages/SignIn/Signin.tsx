@@ -11,8 +11,8 @@ function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<MyFormData>();
+    formState: { errors, isValid },
+  } = useForm<MyFormData>({ mode: "onChange" });
 
   const onSubmitHandler: SubmitHandler<MyFormData> = async (data) => {
     try {
@@ -74,7 +74,10 @@ function SignIn() {
         </fieldset>
         <button
           type="submit"
-          className="text-white font-bold py-2 h-11 bg-sky-400 mt-8 mb-5 rounded-full text-sm"
+          className={`text-white font-bold py-2 h-11 mt-8 mb-5 rounded-full text-sm ${
+            isValid ? "bg-sky-500" : "bg-sky-200"
+          } `}
+          disabled={!isValid}
         >
           로그인
         </button>
