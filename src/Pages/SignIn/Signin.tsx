@@ -17,6 +17,7 @@ function SignIn() {
   const onSubmitHandler: SubmitHandler<MyFormData> = async (data) => {
     try {
       const loginRes = await customAxios.post("auth/signin", data);
+      localStorage.setItem("access_token", loginRes.data.access_token);
       console.log(loginRes);
     } catch (err) {
       console.error(err);
