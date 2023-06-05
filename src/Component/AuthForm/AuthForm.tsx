@@ -136,7 +136,7 @@ function AuthForm() {
           disabled={!isValid}
         >{location.pathname==='/signin' ? '로그인' : '다음'}
         </button>
-        <Link to="/signUp" className="text-sm text-center">{location.pathname==='/signin' ? '이메일로 회원가입' : null}
+        <Link to="/signup" className="text-sm text-center">{location.pathname==='/signin' ? '이메일로 회원가입' : null}
           
         </Link>
       </form>
