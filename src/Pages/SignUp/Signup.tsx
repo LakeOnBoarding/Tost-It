@@ -1,5 +1,9 @@
+import AuthForm from "../../Component/AuthForm/AuthForm";
+
 function SignUp(){
-  return <div>회원가입</div>
+  return (
+    <AuthForm />
+  );
 }
 
 export default SignUp;
