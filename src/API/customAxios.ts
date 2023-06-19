@@ -15,18 +15,22 @@ export const customAuthAxios = axios.create({
   },
 });
 
-//customAuthAxios.interceptors.request.use(
-//    function (config) {
-//        const loginInfo = JSON.parse(localStorage.getItem("loginStorage"));
-//        const accessToken = loginInfo.token;
-//        //const refreshToken = loginInfo.refreshToken;
-//        if (accessToken) {
-//            config.headers["Authorization"] = `Bearer ${accessToken}`;
-//            //config.headers.common["Refresh-Token"] = `Bearer ${refreshToken}`;
-//        }
-//        return config;
-//    },
-//    function (error) {
-//        return Promise.reject(error);
-//    }
-//)
+customAuthAxios.interceptors.request.use(
+  function (config) {
+     const accessToken = JSON.parse(
+       JSON.stringify(localStorage.getItem("access_token"))
+     );
+    //const loginInfoString = localStorage.getItem("access_token");
+    //const loginInfo = loginInfoString ? JSON.parse(loginInfoString) : null;
+
+    if (accessToken) {
+      //const accessToken = loginInfo.access_token;
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+      //config.headers.common["Refresh-Token"] = `Bearer ${refreshToken}`;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
