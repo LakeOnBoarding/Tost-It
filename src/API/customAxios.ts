@@ -15,20 +15,19 @@ export const customAuthAxios = axios.create({
   },
 });
 
-// interface localStorage {
-//   access_token: string
-// }
-
 customAuthAxios.interceptors.request.use(
   function (config) {
-    console.log(localStorage.getItem("access_token"));
-    //const loginInfo = JSON.parse(localStorage.access_token);
-    //const accessToken = loginInfo.token;
-    ////const refreshToken = loginInfo.refreshToken;
-    //if (accessToken) {
-    //  config.headers["Authorization"] = `Bearer ${accessToken}`;
-    //  //config.headers.common["Refresh-Token"] = `Bearer ${refreshToken}`;
-    //}
+     const accessToken = JSON.parse(
+       JSON.stringify(localStorage.getItem("access_token"))
+     );
+    //const loginInfoString = localStorage.getItem("access_token");
+    //const loginInfo = loginInfoString ? JSON.parse(loginInfoString) : null;
+
+    if (accessToken) {
+      //const accessToken = loginInfo.access_token;
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+      //config.headers.common["Refresh-Token"] = `Bearer ${refreshToken}`;
+    }
     return config;
   },
   function (error) {
