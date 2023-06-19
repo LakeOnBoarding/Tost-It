@@ -7,9 +7,11 @@ function SelectInputBox() {
   const [selectedOption, setSelectedOption] = useState("");
   const [todoText, setTodoText] = useState("");
 
-  const handleRegisterInput = async () => {
+  const handleRegisterInput = async (e: React.FormEvent) => {
+    e.preventDefault(); //새로고침 막기
     if (selectedOption === "") {
       alert("시간을 선택해주세요.");
+      // e.preventDefault();
     } else {
       try {
         const testRes = await customAuthAxios.post("todos", {
@@ -31,8 +33,9 @@ function SelectInputBox() {
   };
 
   return (
-    <form className="text-center mt-2">
+    <form className="text-center mt-2" onSubmit={handleRegisterInput}>
       <select
+        id="timeSelect"
         className="w-30 h-10 text-white rounded-xl shadow shadow-black bg-point_blue font-semibold p-2"
         defaultValue=""
         onChange={handleSelectChange}
@@ -52,13 +55,14 @@ function SelectInputBox() {
           value={todoText}
           onChange={handleChange}
         />
-        <FontAwesomeIcon
-          icon={plus}
-          size="2xl"
-          style={{ color: "#ffff" }}
-          className="absolute top-1 right-2 cursor-pointer pl-2"
-          onClick={handleRegisterInput}
-        />
+        <button type="submit">
+          <FontAwesomeIcon
+            icon={plus}
+            size="2xl"
+            style={{ color: "#ffff" }}
+            className="absolute top-1 right-2 cursor-pointer pl-2"
+          />
+        </button>
       </label>
     </form>
   );
