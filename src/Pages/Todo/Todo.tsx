@@ -1,6 +1,7 @@
-// import { useContext } from "react";
-// import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../Component/Button/Button";
 import PostItem from "../../Component/PostItem/PostItem";
 import SelectInputBox from "../../Component/SelectInputBox/SelectInputBox";
@@ -16,6 +17,16 @@ interface TodoItem {
 function Todo() {
   const [showInp, setShowInp] = useState<boolean>(false);
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
+
+  const navigate = useNavigate();
+  const token = useContext(UserContext);
+  console.log(token);
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, [token, navigate]);
 
   const handleShowInput = () => {
     setShowInp(true);
