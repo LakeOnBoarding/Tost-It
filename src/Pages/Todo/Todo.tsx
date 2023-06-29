@@ -1,6 +1,6 @@
-//import { useContext } from "react";
-//import { UserContext } from "../context/UserContext";
-//import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Button from "../../Component/Button/Button";
 import PostItem from "../../Component/PostItem/PostItem";
@@ -18,16 +18,15 @@ function Todo() {
   const [showInp, setShowInp] = useState<boolean>(false);
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
 
-  //const navigate = useNavigate();
-  //const token = useContext(UserContext);
-  //console.log("todo페이지 토큰확인", token);
+  const navigate = useNavigate();
+  const token = useContext(UserContext);
+  // console.log("todo페이지 토큰확인", token);
 
-  //useEffect(() => {
-  //  if (!token) {
-  //    alert("로그인이 필요합니다.");
-  //    navigate("/signin");
-  //  }
-  //}, [token, navigate]);
+  useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, [token, navigate]);
 
   const handleShowInput = () => {
     setShowInp(true);
