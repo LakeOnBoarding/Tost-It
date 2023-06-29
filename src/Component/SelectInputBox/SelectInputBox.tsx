@@ -2,8 +2,14 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus as plus } from "@fortawesome/free-solid-svg-icons";
 import { customAuthAxios } from "../../API/customAxios";
+import { TodoItem } from "../../Pages/Todo/Todo";
 
-function SelectInputBox() {
+interface SelecInputBoxProps {
+  todoList: TodoItem[];
+  setTodoList: (newState: TodoItem[]) => void;
+}
+
+function SelectInputBox({ todoList, setTodoList }: SelecInputBoxProps) {
   const [selectedOption, setSelectedOption] = useState("");
   const [todoText, setTodoText] = useState("");
 
@@ -11,13 +17,17 @@ function SelectInputBox() {
     e.preventDefault(); //새로고침 막기
     if (selectedOption === "") {
       alert("시간을 선택해주세요.");
-      // e.preventDefault();
+      return;
+    }
+    if (todoText === "") {
+      alert("할일을 입력해주세요");
     } else {
       try {
         const testRes = await customAuthAxios.post("todos", {
           todo: todoText + selectedOption,
         });
-        console.log(testRes);
+        const newTodo = testRes.data;
+        setTodoList([...todoList, newTodo]);
       } catch (error) {
         console.log("error");
       }
@@ -54,6 +64,7 @@ function SelectInputBox() {
           placeholder="할 일 입력"
           value={todoText}
           onChange={handleChange}
+          maxLength={30}
         />
         <button type="submit">
           <FontAwesomeIcon
