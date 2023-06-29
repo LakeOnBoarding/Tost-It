@@ -2,8 +2,14 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus as plus } from "@fortawesome/free-solid-svg-icons";
 import { customAuthAxios } from "../../API/customAxios";
+import { TodoItem } from "../../Pages/Todo/Todo";
 
-function SelectInputBox() {
+interface SelecInputBoxProps {
+  todoList: TodoItem[];
+  setTodoList: (newState: TodoItem[]) => void;
+}
+
+function SelectInputBox({ todoList, setTodoList }: SelecInputBoxProps) {
   const [selectedOption, setSelectedOption] = useState("");
   const [todoText, setTodoText] = useState("");
 
@@ -20,7 +26,8 @@ function SelectInputBox() {
         const testRes = await customAuthAxios.post("todos", {
           todo: todoText + selectedOption,
         });
-        console.log(testRes);
+        const newTodo = testRes.data;
+        setTodoList([...todoList, newTodo]);
       } catch (error) {
         console.log("error");
       }

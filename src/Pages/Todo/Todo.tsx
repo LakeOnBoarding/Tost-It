@@ -7,7 +7,7 @@ import PostItem from "../../Component/PostItem/PostItem";
 import SelectInputBox from "../../Component/SelectInputBox/SelectInputBox";
 import { customAuthAxios } from "../../API/customAxios";
 
-interface TodoItem {
+export interface TodoItem {
   id: number;
   todo: string;
   isCompleted: boolean;
@@ -36,7 +36,6 @@ function Todo() {
   const getTodo = async () => {
     try {
       const todoRes = await customAuthAxios.get("todos");
-      console.log(todoRes);
       setTodoList(todoRes.data);
     } catch (error) {
       console.log(error);
@@ -56,9 +55,18 @@ function Todo() {
             What are you working on today?
           </p>
         </div>
-        <ul className="h-450 pt-5 pb-5 pr-10 pl-10 grid grid-cols-2 gap-4 overflow-y-scroll">
+        <ul className="h-fit max-h-450 pt-5 pb-5 pr-10 pl-10 grid grid-cols-2 gap-4 overflow-y-scroll">
           {todoList.map((postIt) => {
-            return <PostItem key={postIt.id}>{postIt.todo}</PostItem>;
+            return (
+              <PostItem
+                key={postIt.id}
+                todoId={postIt.id}
+                todoList={todoList}
+                setTodoList={setTodoList}
+              >
+                {postIt.todo}
+              </PostItem>
+            );
           })}
         </ul>
       </section>
@@ -81,7 +89,7 @@ function Todo() {
 
       {showInp && (
         <section className="w-96  mt-5 flex-row text-lx">
-          <SelectInputBox />{" "}
+          <SelectInputBox todoList={todoList} setTodoList={setTodoList} />{" "}
         </section>
       )}
     </div>
