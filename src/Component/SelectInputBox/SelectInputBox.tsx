@@ -11,7 +11,10 @@ function SelectInputBox() {
     e.preventDefault(); //새로고침 막기
     if (selectedOption === "") {
       alert("시간을 선택해주세요.");
-      // e.preventDefault();
+      return;
+    }
+    if (todoText === "") {
+      alert("할일을 입력해주세요");
     } else {
       try {
         const testRes = await customAuthAxios.post("todos", {
@@ -54,6 +57,7 @@ function SelectInputBox() {
           placeholder="할 일 입력"
           value={todoText}
           onChange={handleChange}
+          maxLength={30}
         />
         <button type="submit">
           <FontAwesomeIcon
