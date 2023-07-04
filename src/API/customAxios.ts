@@ -17,9 +17,9 @@ export const customAuthAxios = axios.create({
 
 customAuthAxios.interceptors.request.use(
   function (config) {
-     const accessToken = JSON.parse(
-       JSON.stringify(localStorage.getItem("access_token"))
-     );
+    const accessToken = JSON.parse(
+      JSON.stringify(localStorage.getItem("access_token"))
+    );
     //const loginInfoString = localStorage.getItem("access_token");
     //const loginInfo = loginInfoString ? JSON.parse(loginInfoString) : null;
 

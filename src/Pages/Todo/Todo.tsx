@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
@@ -45,11 +46,28 @@ function Todo() {
     getTodo();
   }, []);
 
+  const handleViewCategory = (e: MouseEvent<HTMLButtonElement>) => {
+    const timeCategory = e.currentTarget.innerText;
+    navigate("/todo/category", {
+      state: {
+        type: timeCategory,
+        data: todoList,
+      },
+    });
+  };
+
   return (
     <div className="bg-main_skyblue flex flex-col justify-center items-center h-screen">
       <section className="bg-main_bg_cloud max-w-7xl w-98 rounded-xl h-600 relative">
         <div className="sticky top-0 pb-5 rounded-t-xl bg-main_bg_cloud ">
-          <h1 className="font-mono pl-10 pt-9 text-3xl font-semibold">Today</h1>
+          <h1
+            className="font-mono pl-10 pt-9 text-3xl font-semibold cursor-pointer"
+            onClick={() => {
+              location.reload();
+            }}
+          >
+            Today
+          </h1>
           <p className="font-mono  pl-10 pt-3 text-sm">
             What are you working on today?
           </p>
@@ -62,6 +80,7 @@ function Todo() {
                 todoId={postIt.id}
                 todoList={todoList}
                 setTodoList={setTodoList}
+                isCompleted={postIt.isCompleted}
               >
                 {postIt.todo}
               </PostItem>
@@ -71,13 +90,13 @@ function Todo() {
       </section>
       {!showInp && (
         <section className="w-96  mt-5 flex-row text-lx">
-          <Button size="small" onClick={() => console.log("아침")}>
+          <Button size="small" onClick={handleViewCategory}>
             아침
           </Button>
-          <Button size="small" onClick={() => console.log("점심")}>
+          <Button size="small" onClick={handleViewCategory}>
             점심
           </Button>
-          <Button size="small" onClick={() => console.log("저녁")}>
+          <Button size="small" onClick={handleViewCategory}>
             저녁
           </Button>
           <Button size="medium" onClick={handleShowInput}>

@@ -6,6 +6,7 @@ import Splash from "../Pages/Splash/Splash";
 import Todo from "../Pages/Todo/Todo";
 import NotFound from "../Pages/NotFound/NotFound";
 import { UserContext } from "../Pages/context/UserContext";
+import Category from "../Pages/category/Category";
 
 export default function Router() {
   const token = useContext(UserContext);
@@ -16,10 +17,12 @@ export default function Router() {
         <Route path="/" element={<Splash />} />
         <Route path="/*" element={<NotFound />} />
         {token ? (
-          <Route path="/todo" element={<Todo />} />
+          <Route>
+            <Route path="/todo" element={<Todo />} />
+            <Route path="/todo/category" element={<Category />} />
+          </Route>
         ) : (
           <Route>
-            {" "}
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Route>
