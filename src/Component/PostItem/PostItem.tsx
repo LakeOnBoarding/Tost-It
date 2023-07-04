@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, MouseEvent } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
@@ -30,8 +30,7 @@ function PostItem({
   const [isCompletedTodo, setIsCompletedTodo] = useState(isCompleted);
   const todoInput = useRef<HTMLTextAreaElement>(null);
 
-  const handleTodoDelete = (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
+  const handleTodoDelete = () => {
     const deleteConfirm = confirm("정말로 삭제하시겠습니까?");
 
     if (deleteConfirm) {
@@ -49,8 +48,7 @@ function PostItem({
     }
   };
 
-  const handleTodoUpdate = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
+  const handleTodoUpdate = async () => {
     if (updateToggle) {
       const updateData = {
         todo: updatedContent + timeType,
@@ -113,7 +111,7 @@ function PostItem({
           />
         )}
         <button
-          onClick={(event) => handleTodoDelete(event)}
+          onClick={handleTodoDelete}
           className="absolute right-2 bottom-1"
         >
           <FontAwesomeIcon
@@ -122,10 +120,7 @@ function PostItem({
             opacity={0.2}
           />
         </button>
-        <button
-          onClick={(event) => handleTodoUpdate(event)}
-          className="absolute left-2 bottom-1"
-        >
+        <button onClick={handleTodoUpdate} className="absolute left-2 bottom-1">
           <FontAwesomeIcon
             icon={!updateToggle ? faPenToSquare : faCheck}
             className="cursor-pointer hover:opacity-80"
