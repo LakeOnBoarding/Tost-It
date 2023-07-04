@@ -28,9 +28,9 @@ function PostItem({ children, todoId, todoList, setTodoList }: PostItemProps) {
     if (deleteConfirm) {
       const deleteTodo = async () => {
         try {
-          await customAuthAxios.delete(`/todos/${todoId}`);
+          await customAuthAxios.delete(`todos/${todoId}`);
           setTodoList(
-            [...todoList].filter((todoItem) => todoItem.id != todoId)
+            [...todoList].filter((todoItem) => todoItem.id !== todoId)
           );
         } catch (error) {
           console.log(error);
@@ -40,7 +40,19 @@ function PostItem({ children, todoId, todoList, setTodoList }: PostItemProps) {
     }
   };
 
-  const handleTodoUpdate = () => {
+  const handleTodoUpdate = async () => {
+    if (updateToggle) {
+      const updateData = {
+        todo: updatedContent + timeType,
+        isCompleted: false,
+      };
+
+      try {
+        await customAuthAxios.put(`todos/${todoId}`, updateData);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     setUpdateToggle((prev) => !prev);
   };
 
@@ -77,7 +89,7 @@ function PostItem({ children, todoId, todoList, setTodoList }: PostItemProps) {
           />
         </button>
         {!updateToggle ? (
-          content
+          updatedContent
         ) : (
           <textarea
             ref={todoInput}
