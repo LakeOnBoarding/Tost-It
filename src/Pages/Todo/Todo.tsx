@@ -62,6 +62,7 @@ function Todo() {
                 todoId={postIt.id}
                 todoList={todoList}
                 setTodoList={setTodoList}
+                isCompleted={postIt.isCompleted}
               >
                 {postIt.todo}
               </PostItem>
