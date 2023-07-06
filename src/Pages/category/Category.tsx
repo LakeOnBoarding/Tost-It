@@ -53,7 +53,7 @@ function Category() {
     } else if (state === "저녁") {
       timeState.current = "evening";
     }
-  }, [state.type]);
+  }, [state]);
 
   return (
     <div className="bg-main_skyblue flex flex-col justify-center items-center h-screen">
