@@ -4,39 +4,56 @@ import { useLocation } from "react-router-dom";
 import Button from "../../Component/Button/Button";
 import PostItem from "../../Component/PostItem/PostItem";
 import { TodoItem } from "../Todo/Todo";
+import { customAuthAxios } from "../../API/customAxios";
 
 function Category() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [categoryTodoList, setCategoryTodoList] = useState([...state.data]);
+  const [categoryTodoList, setCategoryTodoList] = useState<TodoItem[]>([]);
 
   const timeState = useRef("");
-  console.log(timeState);
+
+  const getTodo = async () => {
+    try {
+      const todoRes = await customAuthAxios.get("todos");
+      if (state === "아침") {
+        setCategoryTodoList(
+          todoRes.data.filter((postIt: TodoItem) => {
+            return postIt.todo.slice(-1) === "1";
+          })
+        );
+      } else if (state === "점심") {
+        setCategoryTodoList(
+          todoRes.data.filter((postIt: TodoItem) => {
+            return postIt.todo.slice(-1) === "2";
+          })
+        );
+      } else if (state === "저녁") {
+        setCategoryTodoList(
+          todoRes.data.filter((postIt: TodoItem) => {
+            return postIt.todo.slice(-1) === "3";
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    if (state.type === "아침") {
-      timeState.current = "morning";
-      setCategoryTodoList(
-        categoryTodoList.filter((postIt: TodoItem) => {
-          return postIt.todo.slice(-1) === "1";
-        })
-      );
-    } else if (state.type === "점심") {
-      timeState.current = "afternoon";
-      setCategoryTodoList(
-        categoryTodoList.filter((postIt: TodoItem) => {
-          return postIt.todo.slice(-1) === "2";
-        })
-      );
-    } else if (state.type === "저녁") {
-      timeState.current = "evening";
-      setCategoryTodoList(
-        categoryTodoList.filter((postIt: TodoItem) => {
-          return postIt.todo.slice(-1) === "3";
-        })
-      );
-    }
+    getTodo();
   }, []);
+
+  // 카테고리 분류 로직
+  useEffect(() => {
+    if (state === "아침") {
+      timeState.current = "morning";
+    } else if (state === "점심") {
+      timeState.current = "afternoon";
+    } else if (state === "저녁") {
+      timeState.current = "evening";
+    }
+  }, [state.type]);
 
   return (
     <div className="bg-main_skyblue flex flex-col justify-center items-center h-screen">
@@ -53,7 +70,7 @@ function Category() {
                   todoId={postIt.id}
                   todoList={categoryTodoList}
                   setTodoList={setCategoryTodoList}
-                  isCompleted={state.data}
+                  isCompleted={postIt.isCompleted}
                 >
                   {postIt.todo}
                 </PostItem>

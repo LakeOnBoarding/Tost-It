@@ -21,7 +21,6 @@ function Todo() {
 
   const navigate = useNavigate();
   const token = useContext(UserContext);
-  // console.log("todo페이지 토큰확인", token);
 
   useEffect(() => {
     if (!token) {
@@ -49,10 +48,7 @@ function Todo() {
   const handleViewCategory = (e: MouseEvent<HTMLButtonElement>) => {
     const timeCategory = e.currentTarget.innerText;
     navigate("/todo/category", {
-      state: {
-        type: timeCategory,
-        data: todoList,
-      },
+      state: timeCategory,
     });
   };
 

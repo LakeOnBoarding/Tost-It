@@ -57,6 +57,12 @@ function PostItem({
 
       try {
         await customAuthAxios.put(`todos/${todoId}`, updateData);
+        //const updatedItem = updateRes.data;
+        //setTodoList(
+        //  todoList.map((todoItem) =>
+        //    todoItem.id === todoId ? updatedItem : todoItem
+        //  )
+        //);
       } catch (error) {
         console.log(error);
       }
@@ -67,7 +73,7 @@ function PostItem({
   const handleTodoCompleted = async () => {
     const updateData = {
       todo: updatedContent + timeType,
-      isCompleted: true,
+      isCompleted: !isCompleted,
     };
     try {
       await customAuthAxios.put(`todos/${todoId}`, updateData);
