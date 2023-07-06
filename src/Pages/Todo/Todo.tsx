@@ -1,6 +1,4 @@
 import { MouseEvent } from "react";
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Button from "../../Component/Button/Button";
@@ -20,13 +18,6 @@ function Todo() {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
 
   const navigate = useNavigate();
-  const token = useContext(UserContext);
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/signin");
-    }
-  }, [token, navigate]);
 
   const handleShowInput = () => {
     setShowInp(true);
