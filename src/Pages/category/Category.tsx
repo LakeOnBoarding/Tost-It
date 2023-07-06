@@ -42,7 +42,7 @@ function Category() {
 
   useEffect(() => {
     getTodo();
-  }, [getTodo]);
+  }, []);
 
   // 카테고리 분류 로직
   useEffect(() => {
