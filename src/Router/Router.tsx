@@ -7,6 +7,7 @@ import Todo from "../Pages/Todo/Todo";
 import NotFound from "../Pages/NotFound/NotFound";
 // import { UserContext } from "../Pages/context/UserContext";
 import Category from "../Pages/category/Category";
+import Loading from "../Pages/Loading/Loading";
 
 export default function Router() {
   // const token = useContext(UserContext);
@@ -20,6 +21,7 @@ export default function Router() {
         <Route path="/todo/category" element={<Category />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/loading" element={<Loading />} />
       </Routes>
     </BrowserRouter>
   );
