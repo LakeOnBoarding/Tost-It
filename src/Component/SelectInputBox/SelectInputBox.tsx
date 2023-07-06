@@ -26,8 +26,12 @@ function SelectInputBox({ todoList, setTodoList }: SelecInputBoxProps) {
         const testRes = await customAuthAxios.post("todos", {
           todo: todoText + selectedOption,
         });
-        const newTodo = testRes.data;
-        setTodoList([...todoList, newTodo]);
+        if (testRes) {
+          alert("할 일이 추가되었습니다.");
+          const newTodo = testRes.data;
+          setTodoList([...todoList, newTodo]);
+          setTodoText("");
+        }
       } catch (error) {
         console.log("error");
       }
