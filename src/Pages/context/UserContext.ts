@@ -1,3 +1,8 @@
-import React from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
 
-export const UserContext = React.createContext<string | null>(null);
+interface UserContextType {
+  token: string | null;
+  setToken: Dispatch<SetStateAction<string | null>>;
+}
+
+export const UserContext = createContext<UserContextType | null>(null);

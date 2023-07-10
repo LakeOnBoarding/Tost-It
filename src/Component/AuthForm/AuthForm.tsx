@@ -6,6 +6,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { useContext } from "react";
+import { UserContext } from "../../Pages/context/UserContext";
 
 type MyFormData = {
   email: string;
@@ -33,10 +35,25 @@ function AuthForm() {
     setInputType(inputType === "password" ? "text" : "password");
   };
 
+  //
+
+  const userContext = useContext(UserContext);
+
+  if (!userContext) {
+    // Error handling code here. For example:
+    throw new Error("UserContext is null");
+  }
+
+  const { setToken } = userContext;
+
   const onSubmitHandler: SubmitHandler<MyFormData> = async (data) => {
     try {
       const loginRes = await customAxios.post("auth/signin", data);
-      localStorage.setItem("access_token", loginRes.data.access_token);
+      if (loginRes) {
+        const login_token = loginRes.data.access_token;
+        localStorage.setItem("access_token", login_token);
+        setToken(login_token);
+      }
       navigate("/todo");
     } catch (err) {
       console.error(err);
@@ -66,7 +83,9 @@ function AuthForm() {
             })}
           />
           {errors.email && (
-            <span className="text-warn_red text-xsm ">{errors.email.message}</span>
+            <span className="text-warn_red text-xsm ">
+              {errors.email.message}
+            </span>
           )}
         </fieldset>
         <fieldset className="block mb-4 relative">
