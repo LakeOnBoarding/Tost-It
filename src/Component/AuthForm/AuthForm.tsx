@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { customAxios } from "../../API/customAxios";
@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { UserContext } from "../../Pages/context/UserContext";
 
 type MyFormData = {
   email: string;
@@ -16,6 +17,7 @@ type MyFormData = {
 function AuthForm() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setToken } = useContext(UserContext);
 
   const {
     register,
@@ -37,6 +39,7 @@ function AuthForm() {
     try {
       const loginRes = await customAxios.post("auth/signin", data);
       localStorage.setItem("access_token", loginRes.data.access_token);
+      setToken(loginRes.data.access_token);
       navigate("/todo");
     } catch (err) {
       console.error(err);
@@ -66,7 +69,9 @@ function AuthForm() {
             })}
           />
           {errors.email && (
-            <span className="text-warn_red text-xsm ">{errors.email.message}</span>
+            <span className="text-warn_red text-xsm ">
+              {errors.email.message}
+            </span>
           )}
         </fieldset>
         <fieldset className="block mb-4 relative">
