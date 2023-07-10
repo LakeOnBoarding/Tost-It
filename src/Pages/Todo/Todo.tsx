@@ -23,14 +23,12 @@ function Todo() {
   const [todoList, setTodoList] = useState<TodoItem[]>([]);
 
   const userContext = useContext(UserContext);
+  const navigate = useNavigate();
 
   if (!userContext) {
-    // Error handling code here. For example:
     throw new Error("UserContext is null");
   }
   const { setToken } = userContext;
-
-  const navigate = useNavigate();
 
   const handleShowInput = () => {
     setShowInp(true);
@@ -62,7 +60,10 @@ function Todo() {
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    setToken(null);
+    setToken(() => {
+      navigate("/");
+      return null;
+    });
   };
 
   return (
