@@ -8,7 +8,6 @@ function App() {
   useEffect(() => {
     const access_token = localStorage.getItem("access_token");
     if (access_token) {
-      console.log("토큰값", token);
       setToken(access_token);
     }
   }, []);
