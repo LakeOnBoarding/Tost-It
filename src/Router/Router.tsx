@@ -7,9 +7,15 @@ import Todo from "../Pages/Todo/Todo";
 import NotFound from "../Pages/NotFound/NotFound";
 import { UserContext } from "../Pages/context/UserContext";
 import Category from "../Pages/category/Category";
+import Loading from "../Pages/Loading/Loading";
 
 export default function Router() {
   const token = useContext(UserContext)?.token;
+  const isLoading = useContext(UserContext)?.isLoading;
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <BrowserRouter>

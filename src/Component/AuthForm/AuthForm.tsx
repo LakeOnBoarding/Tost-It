@@ -8,6 +8,8 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { useContext } from "react";
 import { UserContext } from "../../Pages/context/UserContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type MyFormData = {
   email: string;
@@ -16,6 +18,8 @@ type MyFormData = {
 };
 
 function AuthForm() {
+  const notify = (message: string) => toast.error(message);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -35,8 +39,6 @@ function AuthForm() {
     setInputType(inputType === "password" ? "text" : "password");
   };
 
-  //
-
   const userContext = useContext(UserContext);
 
   if (!userContext) {
@@ -48,15 +50,27 @@ function AuthForm() {
 
   const onSubmitHandler: SubmitHandler<MyFormData> = async (data) => {
     try {
-      const loginRes = await customAxios.post("auth/signin", data);
-      if (loginRes) {
-        const login_token = loginRes.data.access_token;
-        localStorage.setItem("access_token", login_token);
-        setToken(login_token);
+      if (location.pathname === "/signin") {
+        const loginRes = await customAxios.post("auth/signin", data);
+        if (loginRes) {
+          const login_token = loginRes.data.access_token;
+          localStorage.setItem("access_token", login_token);
+          setToken(login_token);
+          navigate("/todo");
+        }
+      } else {
+        const signupRes = await customAxios.post("auth/signup", data);
+        if (signupRes) {
+          navigate("/signin");
+        }
       }
-      navigate("/todo");
-    } catch (err) {
-      console.error(err);
+    } catch (error: any) {
+      let errMsg = error.response.data.message;
+      if (errMsg === "Unauthorized") {
+        errMsg = "비밀번호를 다시 확인해주세요.";
+      }
+      notify(errMsg);
+      console.log(error);
     }
   };
   return (
@@ -168,6 +182,7 @@ function AuthForm() {
           {location.pathname === "/signin" ? "이메일로 회원가입" : null}
         </Link>
       </form>
+      <ToastContainer />
     </section>
   );
 }
