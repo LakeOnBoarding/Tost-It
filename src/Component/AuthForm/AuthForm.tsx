@@ -48,13 +48,20 @@ function AuthForm() {
 
   const onSubmitHandler: SubmitHandler<MyFormData> = async (data) => {
     try {
-      const loginRes = await customAxios.post("auth/signin", data);
-      if (loginRes) {
-        const login_token = loginRes.data.access_token;
-        localStorage.setItem("access_token", login_token);
-        setToken(login_token);
+      if (location.pathname === "/signin") {
+        const loginRes = await customAxios.post("auth/signin", data);
+        if (loginRes) {
+          const login_token = loginRes.data.access_token;
+          localStorage.setItem("access_token", login_token);
+          setToken(login_token);
+          navigate("/todo");
+        }
+      } else {
+        const signupRes = await customAxios.post("auth/signup", data);
+        if (signupRes) {
+          navigate("/signin");
+        }
       }
-      navigate("/todo");
     } catch (err) {
       console.error(err);
     }
